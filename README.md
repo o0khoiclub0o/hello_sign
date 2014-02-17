@@ -1,4 +1,5 @@
 # HelloSign
+[![Build Status](https://travis-ci.org/voanhduy1512/hello_sign.png?branch=master)](https://travis-ci.org/voanhduy1512/hello_sign)
 
 TODO: Write a gem description
 
