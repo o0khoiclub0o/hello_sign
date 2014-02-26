@@ -2,6 +2,7 @@ require 'hello_sign/version'
 require 'hello_sign/objectified_hash'
 require 'hello_sign/error'
 require 'hello_sign/connection'
+
 require 'hello_sign/client'
 
 module HelloSign
@@ -23,7 +24,7 @@ module HelloSign
   end
 
   def self.client
-    @client ||= HelloSign::Client.new(email_address, password)
+    @client ||= HelloSign::Client.new(:email_address => self.email_address, :password => self.password)
   end
 
   def self.configure

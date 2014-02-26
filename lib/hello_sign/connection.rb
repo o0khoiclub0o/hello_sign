@@ -64,13 +64,11 @@ module HelloSign
       @api_version = api_version
       @email_address = email_address
       @password = password
-      binding.pry
     end
 
     private
 
     def error_message(response)
-      binding.pry
       "Server responded with code #{response.status}" \
       "Request URI: #{response.to_hash[:url].to_s}"
     end
