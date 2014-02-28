@@ -13,15 +13,15 @@ module HelloSign
     end
 
     def signature_request_send_with_reusable_form opts
-      post('signature_request/send_with_reusable_form', :body => {opts})
+      post('signature_request/send_with_reusable_form', :body => opts)
     end
 
     def signature_request_remind opts
-      post("signature_request/remind/opts[:signature_request_id]", :body => {opts})
+      post("signature_request/remind/opts[:signature_request_id]", :body => opts)
     end
 
     def signature_request_remind opts
-      post("signature_request/cancel/opts[:signature_request_id]", :body => {opts})
+      post("signature_request/cancel/opts[:signature_request_id]", :body => opts)
     end
 
     #TODO
@@ -38,7 +38,7 @@ module HelloSign
     end
 
     def signature_request_create_embedded_with_reusable_form opts
-      post('signature_request/create_embedded_with_reusable_form', :body => {opts})
+      post('signature_request/create_embedded_with_reusable_form', :body => opts)
     end
   end
 end

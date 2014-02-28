@@ -1,7 +1,6 @@
 require 'hello_sign/version'
 require 'hello_sign/objectified_hash'
 require 'hello_sign/error'
-require 'hello_sign/connection'
 
 require 'hello_sign/client'
 

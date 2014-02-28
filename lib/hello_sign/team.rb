@@ -6,7 +6,7 @@ module HelloSign
     end
 
     def team_create opts
-      post("/team/create", :body => {:opts})
+      post("/team/create", :body => :opts)
     end
 
     def team opts

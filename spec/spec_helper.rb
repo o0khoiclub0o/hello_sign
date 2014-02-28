@@ -3,7 +3,7 @@
 # Require this file using `require "spec_helper"` to ensure that it is only
 # loaded once.
 #
-if Rails.env.travis?
+if ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear!
 end
