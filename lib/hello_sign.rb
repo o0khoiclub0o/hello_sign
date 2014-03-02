@@ -1,33 +1,22 @@
 require 'hello_sign/version'
-require 'hello_sign/objectified_hash'
-require 'hello_sign/error'
-
+require 'hello_sign/configuration'
 require 'hello_sign/client'
 
 module HelloSign
+  extend Configuration
 
-  def self.email_address=(value)
-    @email_address ? CredentialsAlreadySet.new('Password have already set') : @email_address = value
+  def self.client(options={})
+    HelloSign::Client.new(options)
   end
 
-  def self.password=(value)
-    @password ? CredentialsAlreadySet.new('Password have already set') : @password = value
+  # Delegate to HelloSign::Client
+  def self.method_missing(method, *args, &block)
+    return super unless client.respond_to?(method)
+    client.send(method, *args, &block)
   end
 
-  def self.email_address
-    @email_address
-  end
-
-  def self.password
-    @password
-  end
-
-  def self.client
-    @client ||= HelloSign::Client.new(:email_address => self.email_address, :password => self.password)
-  end
-
-  def self.configure
-    yield self
-    self
+  # Delegate to HelloSign::Client
+  def self.respond_to?(method)
+    return super || client.respond_to?(method)
   end
 end

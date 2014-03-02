@@ -1,9 +1,17 @@
 require 'faraday'
 require 'multi_json'
-
+require 'hello_sign/error'
+require 'pry'
 module HelloSign
   # @private
-  module Connection
+  class Connection
+
+    def end_point; end;
+    def api_version; end;
+    def user_agent; end;
+    def email_address; end;
+    def password; end;
+    def api_key; end;
 
     def get(path, options={})
       validate request(path, :get, options)
@@ -22,21 +30,35 @@ module HelloSign
     end
 
     def request(path, method, options={})
-      connection do |faraday|
-        faraday.basic_auth @email_address, @password unless options[:no_auth]
-      end.send method do |request|
-        request.url  "#{@api_version}#{path}", options[:params]
+      binding.pry
+      faraday = connection
+      unless options[:no_auth]
+        if email_address
+          faraday.basic_auth email_address, password
+        elsif api_key
+          faraday.basic_auth api_key, ''
+        else
+          #error
+        end
+      end
+      faraday.send method do |request|
+        request.url  "#{api_version}#{path}", options[:params]
         request.body = options[:body]
       end
     end
 
+
     def connection
-      Faraday.new(:url => @endpoint, headers: {user_agent: "HelloSign Ruby SDK"}) do |faraday|
-        yield faraday
+      Faraday.new(faraday_options) do |faraday|
+        faraday.request  :multipart
         faraday.request  :url_encoded
         faraday.response :logger
-        faraday.adapter  Faraday.default_adapter
+        faraday.adapter  :net_http
       end
+    end
+
+    def faraday_options
+      {url: end_point, headers: {user_agent: user_agent}}
     end
 
     def validate(response)
@@ -51,23 +73,10 @@ module HelloSign
         when 502; raise Error::BadGateway.new error_message(response)
         when 503; raise Error::ServiceUnavailable.new error_message(response)
       end
-      ObjectifiedHash.new MultiJson.load(response.body)
-    end
-
-    def set_request_defaults(endpoint, api_version, email_address, password)
-      raise Error::MissingCredentials.new("Please set an endpoint to API") unless endpoint
-      raise Error::MissingCredentials.new("Please set a api_version") unless api_version
-      raise Error::MissingCredentials.new("Please set a user email_address") unless email_address
-      raise Error::MissingCredentials.new("Please set a password") unless password
-
-      @endpoint = endpoint
-      @api_version = api_version
-      @email_address = email_address
-      @password = password
+      MultiJson.load(response.body)
     end
 
     private
-
     def error_message(response)
       "Server responded with code #{response.status}" \
       "Request URI: #{response.to_hash[:url].to_s}"
