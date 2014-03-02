@@ -6,3 +6,10 @@ rvm:
   - jruby-19mode
   - ruby-head
   - jruby-head
+
+matrix:
+  allow_failures:
+    - rvm: jruby-head
+    - rvm: ruby-head
+  fast_finish: true
+
