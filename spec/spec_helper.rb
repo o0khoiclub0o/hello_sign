@@ -7,6 +7,11 @@ if ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear!
 end
+
+require 'webmock/rspec'
+require 'pry'
+require File.expand_path('../../lib/hello_sign', __FILE__)
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
@@ -22,3 +27,44 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 end
+
+def load_fixture(name)
+  File.new(File.dirname(__FILE__) + "/fixtures/#{name}.json")
+end
+
+def stub_get(path, fixture)
+  stub_request(:get, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}").
+    to_return(:body => load_fixture(fixture))
+end
+
+def a_get(path)
+  a_request(:get, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}")
+end
+
+def stub_post(path, fixture, status_code=200)
+  stub_request(:post, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}").
+    to_return(:body => load_fixture(fixture), :status => status_code)
+end
+
+def a_post(path)
+  a_request(:post, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}")
+end
+
+def stub_put(path, fixture)
+  stub_request(:put, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}").
+    to_return(:body => load_fixture(fixture))
+end
+
+def a_put(path)
+  a_request(:put, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}")
+end
+
+def stub_delete(path, fixture)
+  stub_request(:delete, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}").
+    to_return(:body => load_fixture(fixture))
+end
+
+def a_delete(path)
+  a_request(:delete, "#{HelloSign.end_point}#{HelloSign.api_version}#{path}")
+end
+

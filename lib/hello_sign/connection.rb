@@ -30,7 +30,6 @@ module HelloSign
     end
 
     def request(path, method, options={})
-      binding.pry
       faraday = connection
       unless options[:no_auth]
         if email_address

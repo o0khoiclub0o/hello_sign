@@ -1,7 +1,7 @@
 module HelloSign
   module Configuration
     DEFAULT_ENDPOINT = 'https://api.hellosign.com'.freeze
-    DEFAULT_API_VERSION = 'v3'.freeze
+    DEFAULT_API_VERSION = '/v3'.freeze
     VALID_OPTIONS_KEYS = [:email_address, :password, :api_key, :user_agent, :end_point, :api_version].freeze
 
 

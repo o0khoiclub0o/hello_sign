@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-require 'hello_sign'
-require 'hello_sign/client'
-
 describe HelloSign::Client do
   describe "#initialize" do
     context "with default values" do

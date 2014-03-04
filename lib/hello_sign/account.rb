@@ -1,6 +1,6 @@
 module HelloSign
   module Account
-    def account
+    def get_account
       get("/account")
     end
 

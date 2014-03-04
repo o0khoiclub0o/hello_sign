@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require 'hello_sign'
-
 describe HelloSign do
   after { HelloSign.reset }
 
