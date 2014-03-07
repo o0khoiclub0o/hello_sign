@@ -12,7 +12,7 @@ describe HelloSign::Client do
     end
 
     it "should return current user account" do
-      expect(@account).to be_an HelloSign::ObjectifiedHash
+      expect(@account).to be_an HelloSign::Resource::Account
     end
   end
 
@@ -37,7 +37,7 @@ describe HelloSign::Client do
       it "should throw an exception" do
         stub_post("/account/create", "400", 400)
         expect {
-          HelloSign.create_account :email_address => "test@example.com", :password => "pass"
+          HelloSign.create_account :email_address => "test@example.com", :password => "password"
         }.to raise_error(HelloSign::Error::BadRequest)
       end
     end

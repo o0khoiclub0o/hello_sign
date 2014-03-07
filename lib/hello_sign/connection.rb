@@ -72,7 +72,7 @@ module HelloSign
         when 502; raise Error::BadGateway.new error_message(response)
         when 503; raise Error::ServiceUnavailable.new error_message(response)
       end
-      ObjectifiedHash.new MultiJson.load(response.body)
+      MultiJson.load(response.body)
     end
 
     private
