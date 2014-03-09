@@ -1,7 +1,7 @@
 module HelloSign
   module Resource
-    class Embedded < BaseResource
-      def initialize(client, hash, key='reusable_form')
+    class ReusableForm < BaseResource
+      def initialize(hash, key='reusable_form')
         super
       end
     end

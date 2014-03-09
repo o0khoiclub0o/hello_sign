@@ -1,39 +1,54 @@
+require 'hello_sign/resources/signature_request'
+require 'hello_sign/resources/signature_request_array'
+
 module HelloSign
   module Api
     module SignatureRequest
-      def signature_request opts
-        HelloSign::Resource::SignatureRequest.new self, get("/signature_request#{opts[:signature_request_id]}")
+      def get_signature_request opts
+        HelloSign::Resource::SignatureRequest.new get("/signature_request/#{opts[:signature_request_id]}")
       end
 
-      def signature_request_list
-        HelloSign::Resource::SignatureRequest.new get('/signature_request/list')
+      def get_signature_requests
+        HelloSign::Resource::SignatureRequestArray.new get('/signature_request/list')
       end
 
       #TODO
-      def signature_request_send opts
-        # opts[:file].map {|f| Faraday::UploadIO.new(f, 'image/jpeg')}
-        # HelloSign::Resource::SignatureRequest.new post('/signature_request/send', opt)
+      def send_signature_request opts
+
+        opts[:files].each_with_index do |file, index|
+          opts[:"file[#{index}]"] = Faraday::UploadIO.new(file, 'image/jpeg')
+        end
+        opts.delete(:files)
+
+        opts[:signers].each_with_index do |signer, index|
+          opts[:"signers[#{index}]"] = signer
+        end
+        opts.delete(:signers)
+
+        HelloSign::Resource::SignatureRequest.new post('/signature_request/send', :body => opts)
       end
 
-      def signature_request_send_with_reusable_form opts
+      def send_signature_request_with_reusable_form opts
         HelloSign::Resource::SignatureRequest.new post('/signature_request/send_with_reusable_form', :body => opts)
       end
 
-      def signature_request_remind opts
-        HelloSign::Resource::SignatureRequest.new post("/signature_request/remind/opts[:signature_request_id]", :body => opts)
+      def remind_signature_request opts
+        HelloSign::Resource::SignatureRequest.new post("/signature_request/remind/#{opts[:signature_request_id]}", :body => opts)
       end
 
-      def signature_request_remind opts
-        HelloSign::Resource::SignatureRequest.new post("/signature_request/cancel/opts[:signature_request_id]", :body => opts)
+      def cancel_signature_request opts
+        post("/signature_request/cancel/#{opts[:signature_request_id]}", :body => opts)
       end
+
 
       #TODO
       def signature_request_files opts
+        get("/signature_request/files/#{opts[:signature_request_id]}")
       end
 
       # add Deprecated warning here
       def signature_request_final_copy opts
-        HelloSign::Resource::SignatureRequest.new get "/signature_request/final_copy/opts[:signature_request_id]"
+        HelloSign::Resource::SignatureRequest.new get("/signature_request/final_copy/#{opts[:signature_request_id]}")
       end
 
       #TODO

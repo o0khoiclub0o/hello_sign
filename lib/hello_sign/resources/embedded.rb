@@ -1,7 +1,7 @@
 module HelloSign
   module Resource
     class Embedded < BaseResource
-      def initialize(client, hash, key='embedded')
+      def initialize(hash, key='embedded')
         super
       end
     end
